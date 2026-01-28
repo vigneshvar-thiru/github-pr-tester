@@ -87,15 +87,6 @@ namespace SampleApp.Business
             // Check if email exists
             if (_users.Values.Any(u => u.Email.Equals(email, StringComparison.OrdinalIgnoreCase)))
             {
-                return new RegistrationResult { Success = false, ErrorMessage = "Email already registered" };
-            }
-
-            // Validate password strength
-            var passwordValidation = ValidatePasswordStrength(password);
-            if (!passwordValidation.IsValid)
-            {
-                return new RegistrationResult { Success = false, ErrorMessage = passwordValidation.ErrorMessage };
-            }
 
             if (_passwordHasher == null)
             {
