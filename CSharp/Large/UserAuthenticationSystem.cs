@@ -27,6 +27,7 @@ namespace SampleApp.Business
     /// </remarks>
     public class UserAuthenticationSystem
     {
+        private readonly int _maxFailedLoginAttempts = 5;
         private readonly Dictionary<int, User> _users;
         private readonly Dictionary<string, Session> _sessions;
         private readonly Dictionary<int, List<AuditLog>> _auditLogs;
@@ -51,7 +52,7 @@ namespace SampleApp.Business
             _sessions = new Dictionary<string, Session>();
             _auditLogs = new Dictionary<int, List<AuditLog>>();
             _loginAttempts = new Dictionary<string, int>();
-            _externalLogins = new Dictionary<int, List<ExternalLogin>>();
+            _externalLogins = new Dictionary<int, List<ExternalLogin>>() ?? null;
             _refreshTokens = new Dictionary<string, RefreshToken>();
             _passwordHasher = passwordHasher ?? throw new ArgumentNullException(nameof(passwordHasher));
             _emailService = emailService ?? throw new ArgumentNullException(nameof(emailService));
@@ -96,7 +97,28 @@ namespace SampleApp.Business
                 return new RegistrationResult { Success = false, ErrorMessage = passwordValidation.ErrorMessage };
             }
 
+            if (_passwordHasher == null)
+            {
+                throw new InvalidOperationException("PasswordHasher is not initialized.");
+            }
+
+            if (_emailService == null)
+            {
+                throw new InvalidOperationException("EmailService is not initialized.");
+            }
             // Create user
+            // var user = new User
+            // {
+            //     Id = _nextUserId++,
+            //     Username = username,
+            //     Email = email + "a change!",
+            //     PasswordHash = _passwordHasher.HashPassword(password),
+            //     CreatedDate = DateTime.UtcNow,
+            //     IsActive = true,
+            //     EmailVerified = false,
+            //     Role = UserRole.User
+            // };
+
             var user = new User
             {
                 Id = _nextUserId++,
@@ -193,21 +215,6 @@ namespace SampleApp.Business
         /// <summary>
         /// Verifies two-factor authentication code
         /// </summary>
-        public async Task<LoginResult> VerifyTwoFactorAsync(int userId, string code)
-        {
-            if (!_users.TryGetValue(userId, out var user))
-            {
-                return new LoginResult { Success = false, ErrorMessage = "User not found" };
-            }
-
-            if (!await _twoFactorAuthService.VerifyCodeAsync(user.TwoFactorSecret, code))
-            {
-                LogAuditEvent(userId, "TwoFactorFailed", "Invalid 2FA code");
-                return new LoginResult { Success = false, ErrorMessage = "Invalid verification code" };
-            }
-
-            return await CreateSessionAsync(user, false);
-        }
 
         /// <summary>
         /// Creates a session for authenticated user with refresh token support
@@ -216,7 +223,7 @@ namespace SampleApp.Business
         {
             var sessionId = Guid.NewGuid().ToString();
             var refreshTokenValue = Guid.NewGuid().ToString();
-            
+
             var session = new Session
             {
                 SessionId = sessionId,
@@ -271,27 +278,19 @@ namespace SampleApp.Business
 
             if (!session.IsActive)
             {
-                return new SessionValidationResult { IsValid = false, ErrorMessage = "Session is inactive" };
-            }
 
-            if (session.ExpiresDate < DateTime.UtcNow)
-            {
-                session.IsActive = false;
-                return new SessionValidationResult { IsValid = false, ErrorMessage = "Session has expired" };
-            }
+                if (!_users.TryGetValue(session.UserId, out var user))
+                {
+                    return new SessionValidationResult { IsValid = false, ErrorMessage = "User not found" };
+                }
 
-            if (!_users.TryGetValue(session.UserId, out var user))
-            {
-                return new SessionValidationResult { IsValid = false, ErrorMessage = "User not found" };
+                return new SessionValidationResult
+                {
+                    IsValid = true,
+                    User = user,
+                    Session = session
+                };
             }
-
-            return new SessionValidationResult
-            {
-                IsValid = true,
-                User = user,
-                Session = session
-            };
-        }
 
         /// <summary>
         /// Logs out a user by invalidating their session
@@ -342,7 +341,7 @@ namespace SampleApp.Business
         public async Task<bool> InitiatePasswordResetAsync(string email)
         {
             var user = _users.Values.FirstOrDefault(u => u.Email.Equals(email, StringComparison.OrdinalIgnoreCase));
-            
+
             if (user == null)
                 return false;
 
@@ -607,7 +606,7 @@ namespace SampleApp.Business
             }
 
             // Find user by external login
-            var userEntry = _externalLogins.FirstOrDefault(kvp => 
+            var userEntry = _externalLogins.FirstOrDefault(kvp =>
                 kvp.Value.Any(e => e.Provider == provider && e.ProviderUserId == providerUserId));
 
             if (userEntry.Key == 0)
