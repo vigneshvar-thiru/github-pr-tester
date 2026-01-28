@@ -2,6 +2,7 @@ package com.ecommerce.model;
 
 import java.math.BigDecimal;
 
+// Updated: Enhanced Product class
 public class Product {
     private Long productId;
     private String productName;

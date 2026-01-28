@@ -2,6 +2,7 @@
 -- Comprehensive Analytics and Reporting System
 -- Version: 2.0
 -- Date: 2024-01-15
+-- Updated: Enhanced with machine learning insights
 -- Description: Complete analytics stored procedure for comprehensive business intelligence
 -- This procedure generates detailed reports, analytics, and insights for the e-commerce platform
 -- =============================================

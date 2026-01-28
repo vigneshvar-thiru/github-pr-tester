@@ -4,6 +4,7 @@ import { Observable, throwError, BehaviorSubject } from 'rxjs';
 import { catchError, map, tap, retry, debounceTime, distinctUntilChanged } from 'rxjs/operators';
 import { Product, ProductCategory, ProductVariant, ProductReview } from '../Small/product.model';
 
+// Updated: Enhanced with caching capabilities
 @Injectable({
   providedIn: 'root'
 })

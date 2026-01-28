@@ -2,6 +2,7 @@
 -- Advanced Stored Procedures and Functions
 -- E-Commerce Database - Business Logic Layer
 -- Version: 1.0
+-- Updated: Added transaction logging
 -- =============================================
 
 -- =============================================

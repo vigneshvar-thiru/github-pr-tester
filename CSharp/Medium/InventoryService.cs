@@ -6,6 +6,7 @@ namespace SampleApp.Services
 {
     /// <summary>
     /// Service for handling inventory management
+    /// Updated: Improved stock tracking
     /// </summary>
     public class InventoryService
     {

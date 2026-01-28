@@ -1,4 +1,5 @@
 -- Create view for product inventory summary
+-- Updated: Added supplier information
 CREATE VIEW vw_ProductInventorySummary AS
 SELECT 
     p.ProductId,

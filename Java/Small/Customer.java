@@ -1,9 +1,11 @@
 package com.ecommerce.model;
 
+// Updated: Added phone field
 public class Customer {
     private Long id;
     private String name;
     private String email;
+    private String phone;
     
     public Long getId() {
         return id;

@@ -2,6 +2,7 @@
 -- Comprehensive E-Commerce Database Schema
 -- Version: 1.0
 -- Date: 2024-01-01
+-- Updated: Added audit trail tables
 -- Description: Complete database schema for e-commerce application
 -- =============================================
 

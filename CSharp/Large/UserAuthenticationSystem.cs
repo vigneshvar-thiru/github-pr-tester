@@ -9,6 +9,7 @@ namespace SampleApp.Business
 {
     /// <summary>
     /// Advanced user authentication and authorization system
+    /// Updated: Added OAuth support
     /// </summary>
     /// <remarks>
     /// This system provides comprehensive functionality for:

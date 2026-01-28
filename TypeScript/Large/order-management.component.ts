@@ -12,6 +12,7 @@ import { User } from '../Small/user.model';
 import { ProductService } from '../Medium/product.service';
 import { UserService } from '../Medium/user.service';
 
+// Updated: Added bulk operations support
 interface Order {
   id: string;
   customerId: string;

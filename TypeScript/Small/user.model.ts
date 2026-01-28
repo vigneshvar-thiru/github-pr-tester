@@ -1,3 +1,4 @@
+// Updated: Added lastLogin field
 export interface User {
   id: string;
   email: string;
@@ -7,6 +8,7 @@ export interface User {
   createdAt: Date;
   updatedAt: Date;
   isActive: boolean;
+  lastLogin?: Date;
 }
 
 export enum UserRole {
