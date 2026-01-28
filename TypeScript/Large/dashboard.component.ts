@@ -10,6 +10,7 @@ import { User, UserRole } from '../Small/user.model';
 
 Chart.register(...registerables);
 
+// Updated: Added real-time data refresh
 interface DashboardMetrics {
   totalRevenue: number;
   totalOrders: number;

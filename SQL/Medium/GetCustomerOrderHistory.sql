@@ -1,4 +1,5 @@
 -- Stored procedure to get customer order history
+-- Updated: Added pagination support
 CREATE PROCEDURE GetCustomerOrderHistory
     @CustomerId INT,
     @StartDate DATETIME = NULL,

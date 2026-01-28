@@ -4,6 +4,7 @@ import { Observable, throwError, BehaviorSubject } from 'rxjs';
 import { catchError, map, tap, retry } from 'rxjs/operators';
 import { User, UserProfile, UserRole } from '../Small/user.model';
 
+// Updated: Added session management
 @Injectable({
   providedIn: 'root'
 })

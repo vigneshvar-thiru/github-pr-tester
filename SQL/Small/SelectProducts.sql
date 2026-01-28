@@ -1,8 +1,10 @@
 -- Simple SELECT query
+-- Updated: Added StockQuantity column
 SELECT 
     ProductId,
     ProductName,
-    Price
+    Price,
+    StockQuantity
 FROM Products
 WHERE Price > 100
 ORDER BY Price DESC;

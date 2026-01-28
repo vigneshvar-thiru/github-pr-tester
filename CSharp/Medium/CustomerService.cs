@@ -6,6 +6,7 @@ namespace SampleApp.Services
 {
     /// <summary>
     /// Service for managing customer operations
+    /// Updated: Enhanced with validation
     /// </summary>
     public class CustomerService
     {

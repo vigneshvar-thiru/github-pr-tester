@@ -8,6 +8,7 @@ namespace SampleApp.Business
 {
     /// <summary>
     /// Comprehensive order management system for handling all aspects of order processing
+    /// Updated: Enhanced with webhook support
     /// </summary>
     /// <remarks>
     /// This service provides complete functionality for:

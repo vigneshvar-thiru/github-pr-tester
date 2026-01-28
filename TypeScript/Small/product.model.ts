@@ -1,3 +1,4 @@
+// Updated: Added discount field
 export interface Product {
   id: string;
   name: string;
@@ -10,6 +11,7 @@ export interface Product {
   isActive: boolean;
   createdAt: Date;
   updatedAt: Date;
+  discount?: number;
 }
 
 export enum ProductCategory {
